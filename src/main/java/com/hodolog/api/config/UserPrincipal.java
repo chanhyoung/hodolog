@@ -11,7 +11,7 @@ import lombok.ToString;
 public class UserPrincipal extends User {
 	private final Long userId;
 	
-	public UserPrincipal(com.hodolog.api.domain.Users user) {
+	public UserPrincipal(com.hodolog.api.domain.User user) {
 		super(
 				user.getEmail(),
 				user.getPassword(),

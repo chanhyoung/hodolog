@@ -1,10 +1,10 @@
 package com.hodolog.api.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -19,6 +19,7 @@ import lombok.ToString;
 public class Course {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "course_id")
 	private Long id;
 	
 	private String courseSlug;
@@ -43,7 +44,7 @@ public class Course {
 	
 	private String gymcodingUrl;
 	
-	@Lob
+	@Column(length = 60000)
 	private String content;
 	
 	@Builder

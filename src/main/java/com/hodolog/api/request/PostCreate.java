@@ -1,12 +1,13 @@
 package com.hodolog.api.request;
 
+import javax.validation.constraints.NotBlank;
+
 import com.hodolog.api.exception.InvalidRequest;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import javax.validation.constraints.NotBlank;
 
 @Setter
 @Getter
@@ -16,13 +17,23 @@ public class PostCreate {
     @NotBlank(message = "타이틀을 입력하세요.")
     private String title;
 
+    private String category;
+
     @NotBlank(message = "콘텐츠를 입력해주세요.")
     private String content;
+    
+//    private String[] tags;
+	
+    private Long userId;
 
     @Builder
-    public PostCreate(String title, String content) {
+    public PostCreate(String title, String category, String content
+//    		, String[] tags
+    		) {
         this.title = title;
+        this.category = category;
         this.content = content;
+//        this.tags = tags;
     }
 
     public void validate() {

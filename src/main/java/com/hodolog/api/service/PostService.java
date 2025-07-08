@@ -1,20 +1,25 @@
 package com.hodolog.api.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.hodolog.api.auth.UserAuthUtil;
 import com.hodolog.api.domain.Post;
 import com.hodolog.api.domain.PostEditor;
+import com.hodolog.api.domain.User;
 import com.hodolog.api.exception.PostNotFound;
+import com.hodolog.api.exception.UserNotFound;
 import com.hodolog.api.repository.PostRepository;
 import com.hodolog.api.request.PostCreate;
 import com.hodolog.api.request.PostEdit;
 import com.hodolog.api.request.PostSearch;
 import com.hodolog.api.response.PostResponse;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -22,13 +27,23 @@ import java.util.stream.Collectors;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final UserAuthUtil userAuthUtil;
 
     public void write(PostCreate postCreate) {
+        User user = userAuthUtil.getLoginUser()
+            	.orElseThrow(UserNotFound::new);
+
         Post post = Post.builder()
                 .title(postCreate.getTitle())
+                .category(postCreate.getCategory())
                 .content(postCreate.getContent())
+                .readCount(0)
+                .likeCount(0)
+                .commentCount(0)
+                .bookmarkCount(0)
+                .user(user)
                 .build();
-
+        
         postRepository.save(post);
     }
 

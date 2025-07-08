@@ -17,7 +17,7 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString
-public class User {
+public class Users {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -31,7 +31,7 @@ public class User {
 	private LocalDateTime createdAt;
 	
 	@Builder
-	public User(String name, String email, String password) {
+	public Users(String name, String email, String password) {
 		this.name = name;
 		this.email = email;
 		this.password = password;

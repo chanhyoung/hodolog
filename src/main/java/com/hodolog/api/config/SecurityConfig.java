@@ -24,7 +24,7 @@ import com.hodolog.api.auth.jwt.JwtFilter;
 import com.hodolog.api.auth.jwt.TokenProvider;
 import com.hodolog.api.auth.jwt.handler.Http401Handler;
 import com.hodolog.api.auth.jwt.handler.Http403Handler;
-import com.hodolog.api.domain.User;
+import com.hodolog.api.domain.Users;
 import com.hodolog.api.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -84,7 +84,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return new UserDetailsService() {
 			@Override
 			public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-				User user = userRepository.findByEmail(username)
+				Users user = userRepository.findByEmail(username)
 						.orElseThrow(() -> new UsernameNotFoundException(username + "을 찾을 수 없습니다."));
 				
 				log.info(">>>user={}", user);

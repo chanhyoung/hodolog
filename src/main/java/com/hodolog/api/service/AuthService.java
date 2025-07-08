@@ -3,7 +3,7 @@ package com.hodolog.api.service;
 import org.springframework.stereotype.Service;
 
 import com.hodolog.api.crypto.PasswordEncoder;
-import com.hodolog.api.domain.User;
+import com.hodolog.api.domain.Users;
 import com.hodolog.api.exception.AlreadyExistsEmailException;
 import com.hodolog.api.repository.UserRepository;
 import com.hodolog.api.request.Signup;
@@ -27,7 +27,7 @@ public class AuthService {
 		
 		String encryptedPassword = new PasswordEncoder().encrypt(signup.getPassword());
 		
-		User user = User.builder()
+		Users user = Users.builder()
 				.email(signup.getEmail())
 				.name(signup.getName())
 				.password(encryptedPassword)

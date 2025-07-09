@@ -2,15 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.hodolog.mapper.PostMapper">
-	<select id="selectPosts" parameterType="String" resultType="com.hodolog.api.response.PostResponse">
+	<select id="selectPosts" parameterType="java.util.HashMap" resultType="com.hodolog.api.response.PostResponse">
 		select 
 			post_id id, title, category, content, tags, 
 			read_count, like_count, comment_count, bookmark_count, created_at
 		from post a
-		where 1 = 1
-		<if test="value != null and value != ''">
-			and category = #{category}
-		</if> 
+	    <where>
+	        <if test="category != null and category != ''">
+	            category = #{category}
+	        </if>
+	    </where>
 		order by a.created_at desc
 	</select>
 </mapper>

@@ -1,6 +1,8 @@
 package com.hodolog.api.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -77,13 +79,13 @@ public class PostService {
     public List<PostResponse> getList(String category) {
     	log.info("category: {}", category);
     	
-        // 카테고리 파라미터 정리
-        String cleanCategory = (category != null) ? category.trim() : null;
-        if (cleanCategory != null && cleanCategory.isEmpty()) {
-            cleanCategory = null;
+    	Map<String, String> params = new HashMap<>();
+    	
+        if (category != null && !category.trim().isEmpty()) {
+            params.put("category", category.trim());
         }
         
-        return postMapper.selectPosts(cleanCategory);
+        return postMapper.selectPosts(params);
     }
 
     public List<PostResponse> getList(PostSearch postSearch) {

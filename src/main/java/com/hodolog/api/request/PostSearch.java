@@ -11,7 +11,8 @@ import static java.lang.Math.min;
 @Setter
 @Builder
 public class PostSearch {
-
+	private String category;
+	
     private static final int MAX_SIZE = 2000;
 
     @Builder.Default

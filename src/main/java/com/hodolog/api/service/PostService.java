@@ -17,6 +17,7 @@ import com.hodolog.api.request.PostCreate;
 import com.hodolog.api.request.PostEdit;
 import com.hodolog.api.request.PostSearch;
 import com.hodolog.api.response.PostResponse;
+import com.hodolog.mapper.PostMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final PostMapper postMapper;
     private final UserAuthUtil userAuthUtil;
 
     public void write(PostCreate postCreate) {
@@ -37,6 +39,7 @@ public class PostService {
                 .title(postCreate.getTitle())
                 .category(postCreate.getCategory())
                 .content(postCreate.getContent())
+                .tags(postCreate.getTags())
                 .readCount(0)
                 .likeCount(0)
                 .commentCount(0)
@@ -44,6 +47,7 @@ public class PostService {
                 .user(user)
                 .build();
         
+        log.info("post: {}", post);
         postRepository.save(post);
     }
 
@@ -54,8 +58,32 @@ public class PostService {
         return PostResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())
-                .content(post.getContent())
+                .category(post.getCategory())
+        		.content(post.getContent())
+                .tags(post.getTags())
+                .readCount(post.getReadCount())
+                .likeCount(post.getLikeCount())
+                .commentCount(post.getCommentCount())
+                .bookmarkCount(post.getBookmarkCount())
                 .build();
+    }
+    
+    public List<PostResponse> getList() {
+        return postRepository.findAll().stream()
+                .map(PostResponse::new)
+                .collect(Collectors.toList());
+    }
+    
+    public List<PostResponse> getList(String category) {
+    	log.info("category: {}", category);
+    	
+        // 카테고리 파라미터 정리
+        String cleanCategory = (category != null) ? category.trim() : null;
+        if (cleanCategory != null && cleanCategory.isEmpty()) {
+            cleanCategory = null;
+        }
+        
+        return postMapper.selectPosts(cleanCategory);
     }
 
     public List<PostResponse> getList(PostSearch postSearch) {
@@ -71,7 +99,8 @@ public class PostService {
 
         PostEditor.PostEditorBuilder editorBuilder = post.toEditor();
 
-        PostEditor postEditor = editorBuilder.title(postEdit.getTitle())
+        PostEditor postEditor = editorBuilder
+        		.title(postEdit.getTitle())
                 .content(postEdit.getContent())
                 .build();
 
@@ -85,13 +114,3 @@ public class PostService {
         postRepository.delete(post);
     }
 }
-
-
-
-
-
-
-
-
-
-

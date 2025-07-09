@@ -12,7 +12,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.vladmihalcea.hibernate.type.array.StringArrayType;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -21,6 +24,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@TypeDef(
+    name = "string-array",
+    typeClass = StringArrayType.class
+)
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Post {
 
@@ -36,8 +43,9 @@ public class Post {
 	@Column(length = 60000)
 	private String content;
 	
-//    @Column(name = "tags", columnDefinition = "text[]")
-//    private String[] tags;
+    @Column(name = "tags", columnDefinition = "text[]")
+    @org.hibernate.annotations.Type(type = "string-array")
+    private String[] tags;
 	
     private int readCount;
 
@@ -60,13 +68,12 @@ public class Post {
     private LocalDateTime updatedAt;
     
     @Builder
-    public Post(String title, String category, String content, 
-//    		String[] tags, 
+    public Post(String title, String category, String content, String[] tags, 
     		int readCount, int likeCount, int commentCount, int bookmarkCount, User user) {
         this.title = title;
         this.category = category;
         this.content = content;
-//        this.tags = tags;
+        this.tags = tags;
         this.readCount = readCount;
         this.likeCount = likeCount;
         this.commentCount = commentCount;
@@ -79,7 +86,7 @@ public class Post {
                 .title(title)
                 .category(category)
         		.content(content)
-//                .tags(tags)
+                .tags(tags)
                 .readCount(readCount)
                 .likeCount(likeCount)
                 .commentCount(commentCount)
@@ -91,7 +98,7 @@ public class Post {
         title = postEditor.getTitle();
         category = postEditor.getCategory();
         content = postEditor.getContent();
-//        tags = postEditor.getTags();
+        tags = postEditor.getTags();
         readCount = postEditor.getReadCount();
         likeCount = postEditor.getLikeCount();
         commentCount = postEditor.getCommentCount();
@@ -99,12 +106,3 @@ public class Post {
         user = postEditor.getUser();
     }
 }
-
-
-
-
-
-
-
-
-

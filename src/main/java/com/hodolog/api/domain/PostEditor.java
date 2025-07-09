@@ -1,10 +1,5 @@
 package com.hodolog.api.domain;
 
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 import lombok.Builder;
 import lombok.Getter;
 
@@ -22,7 +17,7 @@ public class PostEditor {
     private final User user;    
 
     @Builder
-    public PostEditor(String title, String category, String content, String[] tags, 
+    public PostEditor(String title, String category, String content, String[] tags,  
     		int readCount, int likeCount, int commentCount, int bookmarkCount, User user) {
         this.title = title;
         this.category = category;

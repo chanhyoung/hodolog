@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hodolog.mapper.PostMapper">
+	<select id="selectPosts" parameterType="String" resultType="com.hodolog.api.response.PostResponse">
+		select 
+			post_id id, title, category, content, tags, 
+			read_count, like_count, comment_count, bookmark_count, created_at
+		from post a
+		where 1 = 1
+		<if test="value != null and value != ''">
+			and category = #{category}
+		</if> 
+		order by a.created_at desc
+	</select>
+</mapper>

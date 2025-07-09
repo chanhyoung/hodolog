@@ -1,5 +1,7 @@
 package com.hodolog.api.request;
 
+import java.util.List;
+
 import javax.validation.constraints.NotBlank;
 
 import com.hodolog.api.exception.InvalidRequest;
@@ -22,18 +24,16 @@ public class PostCreate {
     @NotBlank(message = "콘텐츠를 입력해주세요.")
     private String content;
     
-//    private String[] tags;
+    private String[] tags;
 	
     private Long userId;
 
     @Builder
-    public PostCreate(String title, String category, String content
-//    		, String[] tags
-    		) {
+    public PostCreate(String title, String category, String content, String[] tags) {
         this.title = title;
         this.category = category;
         this.content = content;
-//        this.tags = tags;
+        this.tags = tags;
     }
 
     public void validate() {

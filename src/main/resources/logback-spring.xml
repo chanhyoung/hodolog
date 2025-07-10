@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 변수 정의 -->
+    <property name="LOG_PATH" value="./logs" />
+    <property name="LOG_FILE_NAME" value="hodolog" />
+    
+    <!-- 콘솔 Appender -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+    <!-- 파일 Appender - 전체 로그 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${LOG_FILE_NAME}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 일별 로그 파일 생성 -->
+            <fileNamePattern>${LOG_PATH}/${LOG_FILE_NAME}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+    <!-- 에러 로그 전용 Appender -->
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${LOG_FILE_NAME}-error.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/${LOG_FILE_NAME}-error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+    <!-- 프로파일별 설정 -->
+    <springProfile name="local,dev">
+        <root level="DEBUG">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="FILE" />
+            <appender-ref ref="ERROR_FILE" />
+        </root>
+        
+        <!-- 개발 환경에서는 SQL 로그 출력 -->
+        <logger name="org.springframework.jdbc.core" level="DEBUG" additivity="false">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="FILE" />
+        </logger>
+        
+        <!-- MyBatis SQL 로그 -->
+        <logger name="com.hodolog" level="DEBUG" additivity="false">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="FILE" />
+        </logger>
+        
+        <!-- JPA/Hibernate SQL 로그 -->
+        <logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="FILE" />
+        </logger>
+        
+        <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE" additivity="false">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="FILE" />
+        </logger>
+    </springProfile>
+    
+    <springProfile name="prod">
+        <root level="INFO">
+            <appender-ref ref="FILE" />
+            <appender-ref ref="ERROR_FILE" />
+        </root>
+        
+        <!-- 운영 환경에서는 애플리케이션 로그만 INFO로 -->
+        <logger name="com.hodolog" level="INFO" additivity="false">
+            <appender-ref ref="FILE" />
+            <appender-ref ref="ERROR_FILE" />
+        </logger>
+        
+        <!-- Spring Security 로그 -->
+        <logger name="org.springframework.security" level="WARN" additivity="false">
+            <appender-ref ref="FILE" />
+            <appender-ref ref="ERROR_FILE" />
+        </logger>
+        
+        <!-- 외부 라이브러리 로그 레벨 조정 -->
+        <logger name="org.springframework" level="WARN" />
+        <logger name="org.hibernate" level="WARN" />
+        <logger name="com.querydsl" level="WARN" />
+        <logger name="org.mybatis" level="WARN" />
+    </springProfile>
+    
+    <!-- 기본 설정 (프로파일이 지정되지 않은 경우) -->
+    <springProfile name="!local,!dev,!prod">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="FILE" />
+            <appender-ref ref="ERROR_FILE" />
+        </root>
+        
+        <logger name="com.hodolog" level="DEBUG" additivity="false">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="FILE" />
+        </logger>
+    </springProfile>
+    
+    <!-- 특정 패키지 로그 레벨 설정 -->
+    <logger name="org.springframework.web" level="INFO" />
+    <logger name="org.springframework.boot.web" level="INFO" />
+    <logger name="org.springframework.boot.actuate" level="INFO" />
+    <logger name="org.springframework.data" level="INFO" />
+    
+    <!-- JWT 관련 로그 -->
+    <logger name="io.jsonwebtoken" level="INFO" />
+    
+    <!-- 보안 관련 로그 -->
+    <logger name="org.springframework.security" level="INFO" />
+    
+</configuration>

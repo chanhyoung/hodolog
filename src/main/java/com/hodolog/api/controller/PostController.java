@@ -22,6 +22,7 @@ public class PostController {
 
     @PostMapping("/posts")
     public void post(@RequestBody @Valid PostCreate request) {
+    	log.info("request: {}", request);
         request.validate();
         postService.write(request);
     }
@@ -30,11 +31,19 @@ public class PostController {
     public PostResponse get(@PathVariable Long postId) {
         return postService.get(postId);
     }
-
+    
     @GetMapping("/posts")
-    public List<PostResponse> getList(@ModelAttribute PostSearch postSearch) {
-        return postService.getList(postSearch);
+    public List<PostResponse> getList(@RequestParam String category) {
+        List<PostResponse> lists = postService.getList(category);
+        
+        log.info("lists: {}", lists);
+        return lists;
     }
+
+//    @GetMapping("/posts")
+//    public List<PostResponse> getList(@ModelAttribute PostSearch postSearch) {
+//        return postService.getList(postSearch);
+//    }
 
     @PatchMapping("/posts/{postId}")
     public void edit(@PathVariable Long postId, @RequestBody @Valid PostEdit request) {

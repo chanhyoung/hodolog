@@ -1,5 +1,7 @@
 package com.hodolog.api.controller;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.http.HttpHeaders;
@@ -7,12 +9,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hodolog.api.auth.jwt.JwtFilter;
 import com.hodolog.api.auth.jwt.TokenProvider;
+import com.hodolog.api.domain.User;
+import com.hodolog.api.exception.UserNotFound;
+import com.hodolog.api.repository.UserRepository;
 import com.hodolog.api.request.Login;
 import com.hodolog.api.request.Signup;
 import com.hodolog.api.response.SessionResponse;
@@ -28,6 +34,7 @@ public class AuthController {
 	private final AuthService authService;
 	private final TokenProvider tokenProvider;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
+	private final UserRepository userRepository;
 	
 	@PostMapping("/auth/login")
 	public SessionResponse authorize(@Valid @RequestBody Login login) {
@@ -43,7 +50,10 @@ public class AuthController {
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 		
-		return new SessionResponse(jwt);
+		User user = userRepository.findByEmail(login.getEmail())
+				.orElseThrow(UserNotFound::new);
+		
+		return new SessionResponse(user.getId(), jwt);
 	}
 	
 	@PostMapping("/auth/signup")

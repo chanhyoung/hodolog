@@ -1,17 +1,25 @@
 package com.hodolog.api.controller;
 
-import com.hodolog.api.exception.InvalidRequest;
-import com.hodolog.api.request.PostCreate;
-import com.hodolog.api.request.PostEdit;
-import com.hodolog.api.request.PostSearch;
-import com.hodolog.api.response.PostResponse;
-import com.hodolog.api.service.PostService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 import javax.validation.Valid;
-import java.util.List;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.hodolog.api.request.PostCreate;
+import com.hodolog.api.request.PostEdit;
+import com.hodolog.api.response.PostResponse;
+import com.hodolog.api.service.PostService;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
@@ -33,7 +41,13 @@ public class PostController {
     }
     
     @GetMapping("/posts")
-    public List<PostResponse> getList(@RequestParam String category) {
+    public List<PostResponse> getList(@RequestParam(required = false) String category) {
+    	if (category == null) {
+    		log.info(">>>>category is null");
+    	}
+//    	if (category.equals("null")) {
+//    		log.info(">>>>category 값에 null 스트링존재");
+//    	}
         List<PostResponse> lists = postService.getList(category);
         
         log.info("lists: {}", lists);

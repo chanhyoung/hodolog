@@ -77,13 +77,8 @@ public class PostService {
     }
     
     public List<PostResponse> getList(String category) {
-    	log.info("category: {}", category);
-    	
     	Map<String, String> params = new HashMap<>();
-    	
-        if (category != null && !category.trim().isEmpty()) {
-            params.put("category", category.trim());
-        }
+   		params.put("category", category);
         
         return postMapper.selectPosts(params);
     }

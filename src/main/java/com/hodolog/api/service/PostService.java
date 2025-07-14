@@ -98,7 +98,9 @@ public class PostService {
 
         PostEditor postEditor = editorBuilder
         		.title(postEdit.getTitle())
+        		.category(postEdit.getCategory())
                 .content(postEdit.getContent())
+                .tags(postEdit.getTags())
                 .build();
 
         post.edit(postEditor);

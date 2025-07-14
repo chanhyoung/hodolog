@@ -67,6 +67,7 @@ public class PostService {
                 .likeCount(post.getLikeCount())
                 .commentCount(post.getCommentCount())
                 .bookmarkCount(post.getBookmarkCount())
+                .createdAt(post.getCreatedAt())
                 .build();
     }
     

@@ -9,5 +9,5 @@ import com.hodolog.api.response.PostResponse;
 
 @Mapper
 public interface PostMapper {
-	public List<PostResponse> selectPosts(Map<String, String> params);
+	public List<PostResponse> selectPosts(Map<String, Object> params);
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hodolog.api.request.PostCreate;
 import com.hodolog.api.request.PostEdit;
+import com.hodolog.api.request.PostSearch;
 import com.hodolog.api.response.PostResponse;
 import com.hodolog.api.service.PostService;
 
@@ -40,15 +41,11 @@ public class PostController {
         return postService.get(postId);
     }
     
-    @GetMapping("/posts")
-    public List<PostResponse> getList(@RequestParam(required = false) String category) {
-    	if (category == null) {
-    		log.info(">>>>category is null");
-    	}
-//    	if (category.equals("null")) {
-//    		log.info(">>>>category 값에 null 스트링존재");
-//    	}
-        List<PostResponse> lists = postService.getList(category);
+    @PostMapping("/posts/search")
+    public List<PostResponse> getList(@RequestBody @Valid PostSearch request) {
+        log.info("request: {}", request);
+
+        List<PostResponse> lists = postService.getList(request);
         
         log.info("lists: {}", lists);
         return lists;

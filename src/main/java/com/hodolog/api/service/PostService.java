@@ -77,18 +77,20 @@ public class PostService {
                 .collect(Collectors.toList());
     }
     
-    public List<PostResponse> getList(String category) {
-    	Map<String, String> params = new HashMap<>();
-   		params.put("category", category);
+    public List<PostResponse> getList(PostSearch request) {
+    	Map<String, Object> params = new HashMap<>();
+   		params.put("category", request.getCategory());
+   		params.put("tags", request.getTags());
+   		params.put("sort", request.getSort());
         
         return postMapper.selectPosts(params);
     }
 
-    public List<PostResponse> getList(PostSearch postSearch) {
-        return postRepository.getList(postSearch).stream()
-                .map(PostResponse::new)
-                .collect(Collectors.toList());
-    }
+    // public List<PostResponse> getList(PostSearch postSearch) {
+    //     return postRepository.getList(postSearch).stream()
+    //             .map(PostResponse::new)
+    //             .collect(Collectors.toList());
+    // }
 
     @Transactional
     public void edit(Long id, PostEdit postEdit) {

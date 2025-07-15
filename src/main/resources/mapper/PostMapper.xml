@@ -7,11 +7,37 @@
 			post_id id, title, category, content, tags, 
 			read_count, like_count, comment_count, bookmark_count, created_at
 		from post a
-	    <where>
-	        <if test="category != null and category != ''">
-	            category = #{category}
-	        </if>
-	    </where>
-		order by a.created_at desc
+		where 1 = 1
+		<if test="category != null and category != ''">
+			and category = #{category}
+		</if>
+		<!-- 다중 태그 검색 (List<String> tags를 받는 경우) -->
+		<if test="tags != null and tags.size() > 0">
+			AND (
+					<foreach collection="tags" item="tag" separator=" OR ">
+							#{tag} = ANY(tags)
+					</foreach>
+			)
+		</if>
+		<!-- 동적 정렬 조건 -->
+		<choose>
+			<when test="sort != null and sort == 'readCount'">
+				ORDER BY read_count DESC, created_at DESC
+			</when>
+			<when test="sort != null and sort == 'likeCount'">
+				ORDER BY like_count DESC, created_at DESC
+			</when>
+			<otherwise>
+				ORDER BY created_at DESC
+			</otherwise>
+    </choose>
+        
+		<!-- 페이징 처리 (옵션) -->
+		<if test="limit != null and limit > 0">
+				LIMIT #{limit}
+		</if>
+		<if test="offset != null and offset >= 0">
+				OFFSET #{offset}
+		</if>
 	</select>
 </mapper>

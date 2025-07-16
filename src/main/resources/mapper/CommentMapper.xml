@@ -7,5 +7,6 @@
 			comment_id id, message, user_id, created_at
 		from comment a
 		where post_id = #{postId}
+		order by created_at desc
 	</select>
 </mapper>

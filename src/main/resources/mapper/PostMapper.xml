@@ -40,4 +40,14 @@
 				OFFSET #{offset}
 		</if>
 	</select>
+
+
+	<select id="getTags" resultType="com.hodolog.api.response.TagResponse">
+		SELECT
+				unnest(tags) as tag_name,
+				COUNT(*) as post_count
+		FROM post
+		WHERE tags IS NOT NULL
+		GROUP BY unnest(tags);
+	</select>
 </mapper>

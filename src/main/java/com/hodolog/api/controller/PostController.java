@@ -17,6 +17,7 @@ import com.hodolog.api.request.PostCreate;
 import com.hodolog.api.request.PostEdit;
 import com.hodolog.api.request.PostSearch;
 import com.hodolog.api.response.PostResponse;
+import com.hodolog.api.response.TagResponse;
 import com.hodolog.api.service.PostService;
 
 import lombok.RequiredArgsConstructor;
@@ -64,6 +65,11 @@ public class PostController {
     @DeleteMapping("/posts/{postId}")
     public void delete(@PathVariable Long postId) {
         postService.delete(postId);
+    }
+
+    @GetMapping("/posts/tags")
+    public List<TagResponse> getTags() {
+        return postService.getTags();
     }
 }
 

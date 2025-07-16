@@ -19,6 +19,7 @@ import com.hodolog.api.request.PostCreate;
 import com.hodolog.api.request.PostEdit;
 import com.hodolog.api.request.PostSearch;
 import com.hodolog.api.response.PostResponse;
+import com.hodolog.api.response.TagResponse;
 import com.hodolog.mapper.PostMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -114,5 +115,9 @@ public class PostService {
                 .orElseThrow(PostNotFound::new);
 
         postRepository.delete(post);
+    }
+
+    public List<TagResponse> getTags() {
+        return postMapper.getTags();
     }
 }

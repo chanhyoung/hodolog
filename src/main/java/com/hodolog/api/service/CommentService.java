@@ -3,7 +3,8 @@ package com.hodolog.api.service;
 import com.hodolog.api.domain.Comment;
 import com.hodolog.api.domain.Post;
 import com.hodolog.api.domain.User;
-import com.hodolog.api.exception.CommentNotFound;
+import com.hodolog.api.exception.PostNotFound;
+import com.hodolog.api.exception.UserNotFound;
 import com.hodolog.api.repository.CommentRepository;
 import com.hodolog.api.repository.PostRepository;
 import com.hodolog.api.repository.UserRepository;
@@ -30,9 +31,9 @@ public class CommentService {
 
     public void create(Long postId, CommentCreate commentCreate) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(PostNotFound::new);
         User user = userRepository.findById(commentCreate.getUserId())
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(UserNotFound::new);
 
         Comment comment = Comment.builder()
                 .message(commentCreate.getMessage())
@@ -44,9 +45,9 @@ public class CommentService {
     }
 
     public List<Comment> findAllByPostId(Long postId) {
-    	Map<String, Long> params = new HashMap<>();
-   		params.put("postId", postId);
-   		return commentMapper.findAllByPostId(params);
+        Map<String, Long> params = new HashMap<>();
+        params.put("postId", postId);
+        return commentMapper.findAllByPostId(params);
     }
 
     public void delete(Long commentId) {

@@ -83,6 +83,8 @@ public class PostService {
    		params.put("category", request.getCategory());
    		params.put("tags", request.getTags());
    		params.put("sort", request.getSort());
+        params.put("limit", request.getLimit());
+        params.put("offset", request.getOffset());
         
         return postMapper.selectPosts(params);
     }

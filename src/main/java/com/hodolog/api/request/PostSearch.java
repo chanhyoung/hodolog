@@ -17,6 +17,8 @@ import lombok.ToString;
 public class PostSearch {
 	private String category;
     private List<String> tags;
+    @Builder.Default
+    private String tagOperator = "OR";
     private String sort;
 	
     // private static final int MAX_SIZE = 2000;

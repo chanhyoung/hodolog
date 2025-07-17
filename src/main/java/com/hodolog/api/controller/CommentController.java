@@ -2,7 +2,6 @@ package com.hodolog.api.controller;
 
 import com.hodolog.api.domain.Comment;
 import com.hodolog.api.request.CommentCreate;
-import com.hodolog.api.request.CommentEdit;
 import com.hodolog.api.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

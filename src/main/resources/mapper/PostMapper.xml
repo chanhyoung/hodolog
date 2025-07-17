@@ -13,11 +13,20 @@
 		</if>
 		<!-- 다중 태그 검색 (List<String> tags를 받는 경우) -->
 		<if test="tags != null and tags.size() > 0">
-			AND (
-					<foreach collection="tags" item="tag" separator=" OR ">
-							#{tag} = ANY(tags)
+			<choose>
+				<when test="tagOperator != null and tagOperator == 'AND'">
+					<foreach collection="tags" item="tag" separator=" AND ">
+							AND #{tag} = ANY(tags)
 					</foreach>
-			)
+				</when>
+				<otherwise>
+					AND (
+							<foreach collection="tags" item="tag" separator=" OR ">
+									#{tag} = ANY(tags)
+							</foreach>
+					)
+				</otherwise>
+			</choose>
 		</if>
 		<!-- 동적 정렬 조건 -->
 		<choose>
@@ -41,13 +50,65 @@
 		</if>
 	</select>
 
+	<select id="countPosts" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+		select count(*)
+		from post a
+		where 1 = 1
+		<if test="category != null and category != ''">
+			and category = #{category}
+		</if>
+		<if test="tags != null and tags.size() > 0">
+			<choose>
+				<when test="tagOperator != null and tagOperator == 'AND'">
+					<foreach collection="tags" item="tag" separator=" AND ">
+							AND #{tag} = ANY(tags)
+					</foreach>
+				</when>
+				<otherwise>
+					AND (
+							<foreach collection="tags" item="tag" separator=" OR ">
+									#{tag} = ANY(tags)
+							</foreach>
+					)
+				</otherwise>
+			</choose>
+		</if>
+	</select>
 
 	<select id="getTags" resultType="com.hodolog.api.response.TagResponse">
 		SELECT
 				unnest(tags) as tag_name,
 				COUNT(*) as post_count
 		FROM post
-		WHERE tags IS NOT NULL
-		GROUP BY unnest(tags);
+		WHERE tags IS NOT NULL AND array_length(tags, 1) > 0
+		GROUP BY unnest(tags)
+		ORDER BY post_count DESC, tag_name ASC
+	</select>
+
+	<!-- 인기 태그 조회 (상위 N개) -->
+	<select id="getPopularTags" parameterType="java.lang.Integer" resultType="com.hodolog.api.response.TagResponse">
+			SELECT
+					unnest(tags) as tag_name,
+					COUNT(*) as post_count
+			FROM post
+			WHERE tags IS NOT NULL AND array_length(tags, 1) > 0
+			GROUP BY unnest(tags)
+			ORDER BY post_count DESC
+			<if test="limit != null and limit > 0">
+					LIMIT #{limit}
+			</if>
+	</select>
+
+	<!-- 카테고리별 포스트 개수 조회 -->
+	<select id="getCategoryStats" resultType="com.hodolog.api.response.CategoryStatsResponse">
+			SELECT 
+					category,
+					COUNT(*) as post_count,
+					AVG(read_count) as avg_read_count,
+					MAX(created_at) as latest_post_date
+			FROM post
+			WHERE category IS NOT NULL
+			GROUP BY category
+			ORDER BY post_count DESC
 	</select>
 </mapper>

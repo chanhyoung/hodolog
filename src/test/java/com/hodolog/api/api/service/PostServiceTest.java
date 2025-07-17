@@ -87,7 +87,7 @@ class PostServiceTest {
         postRepository.saveAll(requestPosts);
 
         PostSearch postSearch = PostSearch.builder()
-                .page(1)
+                // .page(1)
                 .build();
 
         // when

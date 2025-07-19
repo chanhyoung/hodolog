@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <!-- 변수 정의 -->
-    <property name="LOG_PATH" value="./logs" />
+    <property name="LOG_PATH" value="D:/projects/vote/hodolog/logs" />
     <property name="LOG_FILE_NAME" value="hodolog" />
     
     <!-- 콘솔 Appender -->

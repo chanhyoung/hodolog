@@ -3,6 +3,7 @@ package com.hodolog.api.response;
 import java.time.LocalDateTime;
 
 import com.hodolog.api.domain.Post;
+import com.hodolog.api.domain.User;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -24,6 +25,7 @@ public class PostResponse {
     private int likeCount;
     private int commentCount;
     private int bookmarkCount;
+    private Long userId;
     private LocalDateTime createdAt;
     
     // 생성자 오버로딩
@@ -37,12 +39,13 @@ public class PostResponse {
         this.likeCount = post.getLikeCount();
         this.commentCount = post.getCommentCount();
         this.bookmarkCount = post.getBookmarkCount();
+        this.userId = post.getUser().getId();
         this.createdAt = post.getCreatedAt();
     }
 
     @Builder
     public PostResponse(Long id, String title, String category, String content, String[] tags, 
-    		int readCount, int likeCount, int commentCount, int bookmarkCount, LocalDateTime createdAt) {
+    		int readCount, int likeCount, int commentCount, int bookmarkCount, Long userId, LocalDateTime createdAt) {
         this.id = id;
         this.title = (title != null) ? title.substring(0, Math.min(title.length(), 10)) : null;
         this.category = category;
@@ -52,6 +55,7 @@ public class PostResponse {
         this.likeCount = likeCount;
         this.commentCount = commentCount;
         this.bookmarkCount = bookmarkCount;
+        this.userId = userId;
         this.createdAt = createdAt;
     }
 }

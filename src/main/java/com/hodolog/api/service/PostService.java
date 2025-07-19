@@ -37,7 +37,7 @@ public class PostService {
     public void write(PostCreate postCreate) {
         User user = userAuthUtil.getLoginUser()
             	.orElseThrow(UserNotFound::new);
-
+        
         Post post = Post.builder()
                 .title(postCreate.getTitle())
                 .category(postCreate.getCategory())
@@ -58,6 +58,8 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(PostNotFound::new);
 
+        log.info("post: {}", post);
+
         return PostResponse.builder()
                 .id(post.getId())
                 .title(post.getTitle())
@@ -68,6 +70,7 @@ public class PostService {
                 .likeCount(post.getLikeCount())
                 .commentCount(post.getCommentCount())
                 .bookmarkCount(post.getBookmarkCount())
+                .userId(post.getUser().getId())
                 .createdAt(post.getCreatedAt())
                 .build();
     }

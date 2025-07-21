@@ -18,7 +18,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    @Transactional(readOnly = true)
+    @Transactional
     public Long join(Member member) {
         validateDuplicateMember(member);  // 중복 회원 검증
         memberRepository.save(member);
@@ -32,10 +32,12 @@ public class MemberService {
                 });
     }
 
+    @Transactional(readOnly = true)
     public List<Member> findAll() {
         return memberRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Member findOne(Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new UserNotFound());

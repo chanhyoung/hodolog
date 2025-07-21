@@ -10,13 +10,11 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype")
 @Getter
-@Setter
 public abstract class Item {
   @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -92,8 +92,8 @@ public class PostService {
         return postMapper.selectPosts(params);
     }
 
-    // public List<PostResponse> getList(PostSearch postSearch) {
-    //     return postRepository.getList(postSearch).stream()
+    // public List<PostResponse> findPosts(PostSearch postSearch) {
+    //     return postRepository.findPosts(postSearch).stream()
     //             .map(PostResponse::new)
     //             .collect(Collectors.toList());
     // }

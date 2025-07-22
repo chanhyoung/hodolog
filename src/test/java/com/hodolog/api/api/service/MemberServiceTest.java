@@ -9,13 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.hodolog.api.domain.Post;
 import com.hodolog.api.domain.shop.Address;
 import com.hodolog.api.domain.shop.Member;
-import com.hodolog.api.exception.PostNotFound;
 import com.hodolog.api.exception.shop.AlreadyExistsNameException;
 import com.hodolog.api.repository.shop.MemberRepository;
-import com.hodolog.api.request.PostCreate;
 import com.hodolog.api.service.shop.MemberService;
 
 @SpringBootTest

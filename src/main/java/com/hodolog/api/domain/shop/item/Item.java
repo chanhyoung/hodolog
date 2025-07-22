@@ -17,18 +17,20 @@ import com.hodolog.api.domain.shop.Category;
 import com.hodolog.api.exception.shop.NotEnoughStockException;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype")
 @Getter
+@Setter
 public abstract class Item {
   @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "item_id")
 	private Long id;
 
-  private String name;
+  protected String name;
 
   private int price;
 

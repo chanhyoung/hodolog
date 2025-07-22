@@ -3,6 +3,8 @@ package com.hodolog.api.domain.shop.item;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+import com.hodolog.api.request.shop.ItemBook;
+
 import lombok.Builder;
 import lombok.Getter;
 
@@ -20,4 +22,11 @@ public class Book extends Item {
     this.isbn = isbn;
   }
 
+  public void edit(ItemBook itemBook) {
+    this.setName(itemBook.getName());
+    this.setPrice(itemBook.getPrice());
+    this.setStockQuantity(itemBook.getStockQuantity());
+    this.author = itemBook.getAuthor();
+    this.isbn = itemBook.getIsbn();
+  }
 }

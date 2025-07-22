@@ -23,8 +23,8 @@ import org.springframework.util.StringUtils;
 
 @Slf4j
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class OrderService {
 
     private final OrderRepository orderRepository;
@@ -78,9 +78,8 @@ public class OrderService {
      * @return 주문 리스트
      */
 
-    /** 주문 검색 */
-
-    public List<Order> findAllByString(OrderSearch orderSearch) {
+    /** 주문 검색 */   
+    private List<Order> findAllByString(OrderSearch orderSearch) {
         //language=JPAQL
         String jpql = "select o From Order o join o.member m";
         boolean isFirstCondition = true;
@@ -117,5 +116,10 @@ public class OrderService {
         }
 
         return query.getResultList();
+    }
+
+    public List<Order> findOrders(OrderSearch orderSearch) {
+        // return findAllByString(orderSearch);
+        return orderRepository.findOrders(orderSearch);
     }
 }

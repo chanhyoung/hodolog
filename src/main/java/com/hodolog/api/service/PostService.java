@@ -106,8 +106,8 @@ public class PostService {
         PostEditor.PostEditorBuilder editorBuilder = post.toEditor();
 
         PostEditor postEditor = editorBuilder
-        		.title(postEdit.getTitle())
-        		.category(postEdit.getCategory())
+                .title(postEdit.getTitle())
+                .category(postEdit.getCategory())
                 .content(postEdit.getContent())
                 .tags(postEdit.getTags())
                 .build();

@@ -8,6 +8,10 @@ public class ItemNotFound extends HodologException {
 	public ItemNotFound() {
 		super(MESSAGE);
 	}
+
+	public ItemNotFound(String message) {
+		super(message);
+	}
 	
 	@Override
 	public int getStatusCode() {

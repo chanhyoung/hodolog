@@ -30,6 +30,6 @@ public class ItemService {
     @Transactional(readOnly = true)
     public Item findOne(Long itemId) {
         return itemRepository.findById(itemId)
-                .orElseThrow(() -> new ItemNotFound());
+                .orElseThrow(() -> new ItemNotFound("아이템을 찾을 수 없습니다. 아이템 ID: " + itemId));
     }
 }

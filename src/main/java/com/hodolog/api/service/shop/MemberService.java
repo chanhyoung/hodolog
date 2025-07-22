@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hodolog.api.domain.shop.Member;
-import com.hodolog.api.exception.UserNotFound;
 import com.hodolog.api.exception.shop.AlreadyExistsNameException;
+import com.hodolog.api.exception.shop.ItemNotFound;
 import com.hodolog.api.repository.shop.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +40,6 @@ public class MemberService {
     @Transactional(readOnly = true)
     public Member findOne(Long memberId) {
         return memberRepository.findById(memberId)
-                .orElseThrow(() -> new UserNotFound());
+                .orElseThrow(() -> new ItemNotFound("회원 정보를 찾을 수 없습니다. 회원 ID: " + memberId));
     }
 }

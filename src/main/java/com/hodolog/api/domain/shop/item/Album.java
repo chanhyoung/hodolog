@@ -3,8 +3,6 @@ package com.hodolog.api.domain.shop.item;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import com.hodolog.api.domain.shop.Item;
-
 import lombok.Getter;
 import lombok.Setter;
 

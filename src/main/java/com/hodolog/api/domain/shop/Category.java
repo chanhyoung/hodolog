@@ -15,6 +15,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.hodolog.api.domain.shop.item.Item;
+
 import lombok.Getter;
 
 @Entity

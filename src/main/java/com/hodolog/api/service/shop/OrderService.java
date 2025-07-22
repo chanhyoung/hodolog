@@ -49,7 +49,7 @@ public class OrderService {
         delivery.setAddress(member.getAddress()); // 회원의 주소를 배송지로 설정
 
         // 주문상품 생성
-        OrderItem orderItem = OrderItem.createOrderItem(item, count, count);
+        OrderItem orderItem = OrderItem.createOrderItem(item, item.getPrice(), count);
 
         Order order = Order.createOrder(member, delivery, orderItem);
         

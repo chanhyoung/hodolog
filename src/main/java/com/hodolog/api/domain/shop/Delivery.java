@@ -12,9 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 import lombok.Getter;
+import lombok.ToString;
 
 @Entity
 @Getter
+@ToString
 public class Delivery {
   @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

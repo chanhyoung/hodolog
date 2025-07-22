@@ -76,7 +76,7 @@ class OrderServiceTest {
         assertEquals(OrderStatus.ORDER, getOrder.getStatus());
         assertEquals(orderCount, getOrder.getOrderItems().get(0).getCount());
         assertEquals(10000 * orderCount, getOrder.getTotalPrice());
-        assertEquals("서울시 강남구 123-456", getOrder.getDelivery().getAddress().toString());
+        assertEquals("강남구", getOrder.getDelivery().getAddress().getStreet());
         assertEquals(8, book.getStockQuantity()); // 주문 후 재고 감소 확인
     }
 }

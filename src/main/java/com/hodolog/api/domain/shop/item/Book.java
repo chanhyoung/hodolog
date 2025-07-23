@@ -5,12 +5,15 @@ import javax.persistence.Entity;
 
 import com.hodolog.api.request.shop.ItemBook;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @DiscriminatorValue("B")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Book extends Item {
   private String author;
   private String isbn;

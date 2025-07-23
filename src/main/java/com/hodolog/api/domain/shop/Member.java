@@ -39,4 +39,12 @@ public class Member {
 		this.name = name;
 		this.address = address;
   }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
 }

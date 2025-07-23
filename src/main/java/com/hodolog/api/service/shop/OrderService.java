@@ -17,6 +17,8 @@ import com.hodolog.api.repository.shop.ItemRepository;
 import com.hodolog.api.repository.shop.MemberRepository;
 import com.hodolog.api.repository.shop.OrderRepository;
 import com.hodolog.api.request.shop.OrderSearch;
+import com.hodolog.api.response.shop.OrderResponse;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
@@ -118,8 +120,11 @@ public class OrderService {
         return query.getResultList();
     }
 
-    public List<Order> findOrders(OrderSearch orderSearch) {
-        // return findAllByString(orderSearch);
-        return orderRepository.findOrders(orderSearch);
+    public List<Order> findOrdersV1(OrderSearch orderSearch) {
+        return orderRepository.findOrdersV1(orderSearch);
+    }
+
+    public List<OrderResponse> findOrdersV2(OrderSearch orderSearch) {
+        return orderRepository.findOrdersV2(orderSearch);
     }
 }

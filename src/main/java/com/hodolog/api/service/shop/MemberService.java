@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -32,12 +33,17 @@ public class MemberService {
                 });
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
+    public void updateMember(Long memberId, String name) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new ItemNotFound("회원 정보를 찾을 수 없습니다. 회원 ID: " + memberId));
+        member.setName(name);
+    }
+
     public List<Member> findAll() {
         return memberRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
     public Member findOne(Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new ItemNotFound("회원 정보를 찾을 수 없습니다. 회원 ID: " + memberId));

@@ -16,7 +16,9 @@ import javax.persistence.ManyToMany;
 import com.hodolog.api.domain.shop.Category;
 import com.hodolog.api.exception.shop.NotEnoughStockException;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
@@ -24,6 +26,7 @@ import lombok.Setter;
 @DiscriminatorColumn(name = "dtype")
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class Item {
   @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

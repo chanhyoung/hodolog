@@ -2,10 +2,12 @@ package com.hodolog.api.repository.shop;
 
 import com.hodolog.api.domain.shop.Order;
 import com.hodolog.api.request.shop.OrderSearch;
+import com.hodolog.api.response.shop.OrderResponse;
 
 import java.util.List;
 
 public interface OrderRepositoryCustom {
 
-    List<Order> findOrders(OrderSearch orderSearch);
+    List<Order> findOrdersV1(OrderSearch orderSearch);
+    List<OrderResponse> findOrdersV2(OrderSearch orderSearch);
 }

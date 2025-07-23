@@ -14,8 +14,6 @@ import com.hodolog.mapper.CommentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

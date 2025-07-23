@@ -2,6 +2,7 @@ package com.hodolog.api.controller.shop;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -16,6 +17,7 @@ import com.hodolog.api.domain.shop.Address;
 import com.hodolog.api.domain.shop.Order;
 import com.hodolog.api.request.shop.OrderCreate;
 import com.hodolog.api.request.shop.OrderSearch;
+import com.hodolog.api.response.shop.OrderItemResponse;
 import com.hodolog.api.response.shop.OrderResponse;
 import com.hodolog.api.service.shop.OrderService;
 
@@ -40,8 +42,8 @@ public class OrderController {
         );
     }
 
-    @GetMapping("/shop/orders/v1")
-    public List<OrderResponse> orderListV1(OrderSearch orderSearch) {
+    @PostMapping("/shop/orders/search/v1")
+    public List<OrderResponse> orderListV1(@RequestBody @Valid OrderSearch orderSearch) {
         log.info("orderSearch: {}", orderSearch);
 
         List<Order> orders = orderService.findOrdersV1(orderSearch);
@@ -50,10 +52,36 @@ public class OrderController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/shop/orders/v2")
-    public List<OrderResponse> orderListV2(OrderSearch orderSearch) {
+    @PostMapping("/shop/orders/search/v2")
+    public List<OrderResponse> orderListV2(@RequestBody @Valid OrderSearch orderSearch) {
         log.info("orderSearch: {}", orderSearch);
-        return orderService.findOrdersV2(orderSearch);
+        List<OrderResponse> result = orderService.findOrdersV2(orderSearch);
+        // result.forEach(order -> {
+        //     List<OrderItemResponse> orderItems = findOrderItems(order.getId());
+        //     order.setOrderItems(orderItems);
+        // });
+
+        List<Long> orderIds = result.stream()
+                .map(order -> order.getId())
+                .collect(Collectors.toList());
+
+        List<OrderItemResponse> orderItems = findOrderItems(orderIds);
+
+        log.info("orderItems: {}", orderItems);
+
+        Map<Long, List<OrderItemResponse>> orderItemsMap = orderItems.stream()
+                .collect(Collectors.groupingBy(orderItemResponse -> orderItemResponse.getOrderId()));
+
+        log.info("orderItemsMap: {}", orderItemsMap);
+
+        result.forEach(order -> order.setOrderItems(orderItemsMap.get(order.getId())));
+
+        return result;
+    }
+
+    private List<OrderItemResponse> findOrderItems(List<Long> orderIds) {
+        List<OrderItemResponse> result = orderService.findOrderItems(orderIds);
+        return result;
     }
 
     @GetMapping("/shop/orders/{orderId}/cancel")

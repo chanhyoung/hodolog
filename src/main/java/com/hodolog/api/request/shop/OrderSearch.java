@@ -1,8 +1,5 @@
 package com.hodolog.api.request.shop;
 
-import java.util.List;
-
-import com.hodolog.api.domain.shop.Order;
 import com.hodolog.api.domain.shop.OrderStatus;
 
 import lombok.Builder;

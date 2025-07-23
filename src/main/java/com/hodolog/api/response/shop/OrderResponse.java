@@ -1,6 +1,8 @@
 package com.hodolog.api.response.shop;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.hodolog.api.domain.shop.Address;
 import com.hodolog.api.domain.shop.Order;
@@ -16,6 +18,7 @@ public class OrderResponse {
     private LocalDateTime orderDate;
     private String orderStatus;
     private Address address;
+    private List<OrderItemResponse> orderItems;
 
     public OrderResponse(Order order) {
         this.id = order.getId();
@@ -23,6 +26,9 @@ public class OrderResponse {
         this.orderDate = order.getOrderDate();
         this.orderStatus = order.getStatus().name();
         this.address = order.getDelivery().getAddress();
+        this.orderItems = order.getOrderItems().stream()
+            .map(orderItem -> new OrderItemResponse(orderItem))
+            .collect(Collectors.toList()); // Assu
     }
 
     // @QueryProjection을 사용한 생성자 (컴파일 타임에 체크 가능)

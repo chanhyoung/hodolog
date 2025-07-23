@@ -3,7 +3,6 @@ package com.hodolog.api.service.shop;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,18 +21,15 @@ import com.hodolog.api.response.shop.OrderResponse;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.StringUtils;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class OrderService {
 
     private final OrderRepository orderRepository;
     private final MemberRepository memberRepository;
     private final ItemRepository itemRepository;
-    private final EntityManager em;
 
     /**
      * 주문을 저장하는 메서드
@@ -74,17 +70,5 @@ public class OrderService {
         
         order.cancel();
         log.info("주문이 취소되었습니다. 주문 ID: {}", orderId);
-    }
-
-    public List<Order> findOrdersV1(OrderSearch orderSearch) {
-        return orderRepository.findOrdersV1(orderSearch);
-    }
-
-    public List<OrderResponse> findOrdersV2(OrderSearch orderSearch) {
-        return orderRepository.findOrdersV2(orderSearch);
-    }
-
-    public List<OrderItemResponse> findOrderItems(List<Long> orderIds) {
-        return orderRepository.findOrderItems(orderIds);
     }
 }

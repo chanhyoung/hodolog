@@ -6,10 +6,12 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Embeddable
 @Getter
 @AllArgsConstructor
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Address {
   private String city;

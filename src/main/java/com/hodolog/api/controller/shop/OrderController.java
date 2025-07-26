@@ -3,6 +3,7 @@ package com.hodolog.api.controller.shop;
 import java.util.List;
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,5 +51,10 @@ public class OrderController {
     @PostMapping("/shop/orders/search/v2")
     public List<OrderResponse> orderListV2(@RequestBody @Valid OrderSearch orderSearch) {
         return orderQueryService.orderListV2(orderSearch);
+    }
+
+    @PostMapping("/shop/orders/search/paging")
+    public Page<OrderResponse> orderListPaging(@RequestBody @Valid OrderSearch orderSearch) {
+        return orderQueryService.orderListPaging(orderSearch);
     }
 }

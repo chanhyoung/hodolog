@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,6 +55,11 @@ public class OrderQueryService {
         return result;
     }
 
+    public Page<OrderResponse> orderListPaging(@RequestBody @Valid OrderSearch orderSearch) {
+        log.info("orderSearch: {}", orderSearch);
+        return orderRepository.findOrdersPaging(orderSearch);
+    }
+
     private List<OrderItemResponse> findOrderItems(List<Long> orderIds) {
         List<OrderItemResponse> result = orderRepository.findOrderItems(orderIds);
         return result;
@@ -66,5 +72,4 @@ public class OrderQueryService {
     public List<OrderResponse> findOrdersV2(OrderSearch orderSearch) {
         return orderRepository.findOrdersV2(orderSearch);
     }
-
 }

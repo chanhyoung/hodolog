@@ -39,26 +39,18 @@ public class OrderQueryService {
     public List<OrderResponse> orderListV2(@RequestBody @Valid OrderSearch orderSearch) {
         log.info("orderSearch: {}", orderSearch);
         List<OrderResponse> result = findOrdersV2(orderSearch);
-        // result.forEach(order -> {
-        //     List<OrderItemResponse> orderItems = findOrderItems(order.getId());
-        //     order.setOrderItems(orderItems);
-        // });
-
         List<Long> orderIds = result.stream()
                 .map(order -> order.getId())
                 .collect(Collectors.toList());
 
         List<OrderItemResponse> orderItems = findOrderItems(orderIds);
-
         log.info("orderItems: {}", orderItems);
 
         Map<Long, List<OrderItemResponse>> orderItemsMap = orderItems.stream()
                 .collect(Collectors.groupingBy(orderItemResponse -> orderItemResponse.getOrderId()));
-
         log.info("orderItemsMap: {}", orderItemsMap);
 
         result.forEach(order -> order.setOrderItems(orderItemsMap.get(order.getId())));
-
         return result;
     }
 

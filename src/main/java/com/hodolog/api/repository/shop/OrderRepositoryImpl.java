@@ -50,7 +50,10 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
             .from(QOrder.order)
             .join(QOrder.order.member, QMember.member)
             .join(QOrder.order.delivery, QDelivery.delivery)
-            .where(statusEq(orderSearch.getOrderStatus()), nameLike(orderSearch.getMemberName()))
+            .where(
+                statusEq(orderSearch.getOrderStatus()), 
+                nameLike(orderSearch.getMemberName())
+            )
             // .limit(1000)
             .limit(orderSearch.getLimit())
             .offset(orderSearch.getOffset())

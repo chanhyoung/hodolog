@@ -1,6 +1,8 @@
 package com.hodolog.api;
 
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,7 @@ import javax.persistence.EntityManager;
  * 	 * SPRING1 BOOK
  * 	 * SPRING2 BOOK
  */
+@Profile({"local", "test"})
 @Component
 @RequiredArgsConstructor
 public class InitOrderDb {

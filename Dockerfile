@@ -42,7 +42,8 @@ USER spring:spring
 EXPOSE 8080
 
 # Set JVM options for containerized environment
-ENV JAVA_OPTS="-Xms256m -Xmx512m"
+#ENV JAVA_OPTS="-Xms256m -Xmx512m"
 
 # Run the application
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar /app/hodolog.jar"]
+#ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar /app/hodolog.jar"]
+ENTRYPOINT ["sh", "-c", "java -jar /app/hodolog.jar"]

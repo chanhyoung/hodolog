@@ -7,3 +7,8 @@ docker run --hostname=6e41bf6946be
 --env=POSTGRES_USER=myuser --env=POSTGRES_PASSWORD=mypassword 
 --env=POSTGRES_DB=mydb --volume=/var/lib/postgresql/data 
 --network=hodolog-network -p 5432:5432 --restart=no --runtime=runc -d chlee3927/hodolog-postgres:1.0.0
+
+
+keytool.exe -delete -alias openapi_bai -keystore "C:\Program Files\java\jdk-11.0.2\lib\security\cacerts" -storepass changeit
+keytool.exe -import -alias openapi_bai -keystore "C:\Program Files\java\jdk-11.0.2\lib\security\cacerts" -storepass changeit -file "D:\projects\vote\_.data.go.kr.crt"
+

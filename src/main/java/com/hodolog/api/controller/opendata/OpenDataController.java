@@ -1,6 +1,7 @@
 package com.hodolog.api.controller.opendata;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,9 +19,14 @@ public class OpenDataController {
   private final OpenDataService openDataService;
 
   @GetMapping("/getBidPblancListInfoCnstwk")
-  public void get() {
-    String startMonth = "202501";
+  public void bidPblancListInfoCnstwk() {
+    String startMonth = "202508";
     String endMonth = "202508";
+
+    // 로그 파일 생성
+    String logFileName = String.format("bidPblancListInfoCnstwk_%s_%s_%s.log", startMonth, endMonth,
+      LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss")));
+    FileLogger fileLogger = new FileLogger(logFileName);
 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
     LocalDate startDate = LocalDate.parse(startMonth + "01", formatter);
@@ -30,7 +36,7 @@ public class OpenDataController {
       LocalDate lastDayOfMonth = startDate.withDayOfMonth(startDate.lengthOfMonth());
 
     //   openDataService.getBidPblancListInfoCnstwk("1", "20250701", "20250731");
-      openDataService.getBidPblancListInfoCnstwk("1", startDate.format(formatter), lastDayOfMonth.format(formatter));
+      openDataService.getBidPblancListInfoCnstwk(fileLogger, "1", startDate.format(formatter), lastDayOfMonth.format(formatter));
 
       startDate = startDate.plusMonths(1);
     }

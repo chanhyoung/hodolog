@@ -31,8 +31,6 @@ public class OpenDataService {
     public void getBidPblancListInfoCnstwk(FileLogger fileLogger, String inqryDiv, String inqryBgnDt, String inqryEndDt) {
         log.info("inqryBgnDt: {}", inqryBgnDt);
         log.info("inqryEndDt: {}", inqryEndDt);
-        fileLogger.log("inqryBgnDt: " + inqryBgnDt);
-        fileLogger.log("inqryEndDt: " + inqryEndDt);
 
         try {
             String service = "getBidPblancListInfoCnstwk";
@@ -41,20 +39,20 @@ public class OpenDataService {
             BidApiResponse firstResponse = callApi(fileLogger, service, 1, inqryDiv, inqryBgnDt, inqryEndDt);
             if (firstResponse == null || firstResponse.getResponse() == null ||
                     firstResponse.getResponse().getBody() == null) {
-                throw new RuntimeException("API 응답이 비어있습니다.");
+                throw new RuntimeException("API response is null.");
             }
 
             int totalCount = firstResponse.getResponse().getBody().getTotalCount();
             int numOfRows = Integer.parseInt(NUM_OF_ROWS);
             int totalPages = (int) Math.ceil((double) totalCount / numOfRows);
 
-            log.info("전체 건수: {}, 페이지당 건수: {}, 총 페이지 수: {}", totalCount, numOfRows, totalPages);
-            fileLogger.log("전체 건수: " + totalCount + ", 페이지당 건수: " + numOfRows + ", 총 페이지 수: " + totalPages);
+            log.info("totalCount: {}, numOfRows: {}, totalPages: {}", totalCount, numOfRows, totalPages);
+            fileLogger.log("totalCount: " + totalCount + ", numOfRows: " + numOfRows + ", totalPages: " + totalPages);
 
             // 첫 번째 페이지 파일 저장
             saveFiles(firstResponse, service, 1, inqryBgnDt, inqryEndDt, totalCount);
-            log.info("페이지 {}/{} 완료", 1, totalPages);
-            fileLogger.log("페이지 1/" + totalPages + " 완료");
+            log.info("page {}/{} completed", 1, totalPages);
+            fileLogger.log("page 1/" + totalPages + " completed");
 
             // 나머지 페이지들 순차적으로 처리
             for (int pageNo = 2; pageNo <= totalPages; pageNo++) {
@@ -63,29 +61,29 @@ public class OpenDataService {
                 if (response != null && response.getResponse() != null &&
                         response.getResponse().getBody() != null) {
                     saveFiles(response, service, pageNo, inqryBgnDt, inqryEndDt, totalCount);
-                    log.info("페이지 {}/{} 완료", pageNo, totalPages);
-                    fileLogger.log("페이지 " + pageNo + "/" + totalPages + " 완료");
+                    log.info("page {}/{} completed", pageNo, totalPages);
+                    fileLogger.log("page " + pageNo + "/" + totalPages + " completed");
 
                     // API 호출 간격 조절 (서버 부하 방지)
                     Thread.sleep(100); // 100ms 대기
                 } else {
                     log.warn("페이지 {} 응답이 비어있어 건너뜁니다.", pageNo);
-                    fileLogger.log("페이지 " + pageNo + " 응답이 비어있어 건너뜁니다.");
+                    fileLogger.log("pageNo: " + pageNo + " skipped by response is null");
                 }
             }
 
-            log.info("전체 {}개 페이지의 파일 생성이 완료되었습니다.", totalPages);
-            fileLogger.log("전체 " + totalPages + "개 페이지의 파일 생성이 완료되었습니다.");
+            log.info("All {} pages completed.", totalPages);
+            fileLogger.log("All " + totalPages + " pages completed.");
 
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            log.error("스레드 인터럽트 발생", e);
-            fileLogger.log("스레드 인터럽트 발생: " + e.getMessage());
-            throw new RuntimeException("데이터 처리 중 인터럽트가 발생했습니다: " + e.getMessage());
+            log.error("InterruptedException: {}", e.getMessage());
+            fileLogger.log("InterruptedException: " + e.getMessage());
+            throw new RuntimeException("InterruptedException: " + e.getMessage());
         } catch (Exception e) {
-            log.error("API 호출 또는 파일 저장 중 오류 발생", e);
-            fileLogger.log("API 호출 또는 파일 저장 중 오류 발생: " + e.getMessage());
-            throw new RuntimeException("데이터 처리 중 오류가 발생했습니다: " + e.getMessage());
+            log.error("Error occurred while calling API or saving file: ", e.getMessage());
+            fileLogger.log("Error occurred while calling API or saving file: " + e.getMessage());
+            throw new RuntimeException("Error occurred while calling API or saving file: " + e.getMessage());
         }
     }
 
@@ -100,8 +98,8 @@ public class OpenDataService {
             ResponseEntity<BidApiResponse> response = restTemplate.getForEntity(url, BidApiResponse.class);
             return response.getBody();
         } catch (Exception e) {
-            log.error("API 호출 실패 - 페이지: {}, URL: {}", pageNo, url, e);
-            fileLogger.log("API 호출 실패 - 페이지: " + pageNo + ", URL: " + url + ", 오류: " + e.getMessage());
+            log.error("callApi failure - pageNo: {}, URL: {}", pageNo, url, e);
+            fileLogger.log("callApi failure - pageNo: " + pageNo + ", URL: " + url + ", error: " + e.getMessage());
             return null;
         }
     }
@@ -129,8 +127,8 @@ public class OpenDataService {
             // totalCount, "json");
             saveAsTxtFile(bidResponse, service, pageNo, inqryBgnDt, inqryEndDt, totalCount, "txt");
         } catch (IOException e) {
-            log.error("페이지 {} 파일 저장 실패", pageNo, e);
-            throw new RuntimeException("파일 저장 중 오류 발생: " + e.getMessage());
+            log.error("Page {} File save failed", pageNo, e);
+            throw new RuntimeException("Error occurred while saving file: " + e.getMessage());
         }
     }
 

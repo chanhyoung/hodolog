@@ -25,6 +25,9 @@ public class OpenDataService {
      * API 호출하여 전체 페이지 데이터를 받아 파일로 저장
      */
     public void getBidPblancListInfoCnstwk(String inqryDiv, String inqryBgnDt, String inqryEndDt) {
+      log.info("inqryBgnDt: {}", inqryBgnDt);
+      log.info("inqryEndDt: {}", inqryEndDt);
+
       try {
           String service = "getBidPblancListInfoCnstwk";
           

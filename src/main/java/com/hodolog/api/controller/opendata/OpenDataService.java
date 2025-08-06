@@ -1,9 +1,6 @@
 package com.hodolog.api.controller.opendata;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -31,6 +28,7 @@ public class OpenDataService {
     public void getBidPblancListInfoCnstwk(FileLogger fileLogger, String inqryDiv, String inqryBgnDt, String inqryEndDt) {
         log.info("inqryBgnDt: {}", inqryBgnDt);
         log.info("inqryEndDt: {}", inqryEndDt);
+        fileLogger.log("inqryBgnDt: " + inqryBgnDt + ", inqryEndDt: " + inqryEndDt);
 
         try {
             String service = "getBidPblancListInfoCnstwk";
@@ -51,8 +49,8 @@ public class OpenDataService {
 
             // 첫 번째 페이지 파일 저장
             saveFiles(firstResponse, service, 1, inqryBgnDt, inqryEndDt, totalCount);
-            log.info("page {}/{} completed", 1, totalPages);
-            fileLogger.log("page 1/" + totalPages + " completed");
+            log.info("page {}/{} completed.", 1, totalPages);
+            fileLogger.log("page 1/" + totalPages + " completed.");
 
             // 나머지 페이지들 순차적으로 처리
             for (int pageNo = 2; pageNo <= totalPages; pageNo++) {
@@ -67,7 +65,7 @@ public class OpenDataService {
                     // API 호출 간격 조절 (서버 부하 방지)
                     Thread.sleep(100); // 100ms 대기
                 } else {
-                    log.warn("페이지 {} 응답이 비어있어 건너뜁니다.", pageNo);
+                    log.warn("pageNo: {} skipped by response is null", pageNo);
                     fileLogger.log("pageNo: " + pageNo + " skipped by response is null");
                 }
             }
